@@ -13,7 +13,7 @@
 
 	<groupId>com.wbr</groupId>
 	<artifactId>wbr-spring-boot-starter</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<name>WBR Spring Boot Starter</name>
 	<description>Opinionated platform starter shared by all WBR microservices:
 		logging, auth, observability, error handling, HTTP client, graceful shutdown and health.</description>
