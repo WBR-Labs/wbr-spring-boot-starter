@@ -1,0 +1,15 @@
+name: CI
+
+on:
+  workflow_dispatch: # Enables the manual trigger button
+  push:
+    branches: [main, master]
+
+jobs:
+  pipeline:
+    permissions:
+      id-token: write
+      contents: read
+    uses: WBR-Platform/wbr-github-workflows/.github/workflows/pipeline.yml@main
+    with:
+      flavour: maven

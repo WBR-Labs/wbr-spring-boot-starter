@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.1.0</version>
+		<relativePath />
+	</parent>
+
+	<groupId>com.wbr</groupId>
+	<artifactId>wbr-spring-boot-starter</artifactId>
+	<version>0.0.1</version>
+	<name>WBR Spring Boot Starter</name>
+	<description>Opinionated platform starter shared by all WBR microservices:
+		logging, auth, observability, error handling, HTTP client, graceful shutdown and health.</description>
+
+	<properties>
+		<java.version>25</java.version>
+	</properties>
+
+	<dependencies>
+		<!-- Web (REST controllers, RestClient, embedded server) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- Auto-configured RestClient.Builder + HTTP client settings -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-restclient</artifactId>
+		</dependency>
+		<!-- Bearer-token authentication + SecurityFilterChain -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
+		<!-- Bean Validation for request DTOs (drives 400 error handling) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<!-- Health, info, metrics, graceful-shutdown lifecycle -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- Distributed tracing + metrics + OTLP export (single bundle) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-opentelemetry</artifactId>
+		</dependency>
+		<!-- @Cacheable/@EnableCaching support, backed by Caffeine -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+		</dependency>
+
+		<!-- JSON log encoding for non-development profiles -->
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>8.0</version>
+		</dependency>
+
+		<!-- Bridges Logback log events into the OTel SdkLoggerProvider that
+			 spring-boot-starter-opentelemetry configures; Boot only wires the SDK/exporter,
+			 it does not ship a Logback bridge. -->
+		<dependency>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-logback-appender-1.0</artifactId>
+			<version>2.29.0-alpha</version>
+		</dependency>
+		<!-- Pin to match opentelemetry-sdk 1.62.0 (Boot-managed). This artifact's own
+			 transitive pull (1.63.0-alpha, via opentelemetry-instrumentation-api 2.29.0)
+			 relocated io.opentelemetry.api.incubator.common.ExtendedAttributeKey and breaks
+			 opentelemetry-sdk 1.62.0's ExtendedSdkLogRecordBuilder at runtime with a
+			 NoClassDefFoundError. A direct dependency declaration outranks the transitive one
+			 regardless of graph depth, so this forces the compatible version. -->
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-api-incubator</artifactId>
+			<version>1.62.0-alpha</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- API documentation UI (Swagger UI), enabled in development profile only -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.8.3</version>
+		</dependency>
+
+		<!-- Smoke-tests the auto-configuration wiring (not exported to consumers) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
