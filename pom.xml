@@ -20,6 +20,9 @@
 
 	<properties>
 		<java.version>25</java.version>
+		<!-- OTel instrumentation 2.x pairs with the OTel core 1.(x+34) line; keep in
+			 lockstep with the Boot-managed opentelemetry.version (1.62.0 -> 2.28.0). -->
+		<opentelemetry-instrumentation.version>2.28.0</opentelemetry-instrumentation.version>
 	</properties>
 
 	<dependencies>
@@ -72,22 +75,11 @@
 
 		<!-- Bridges Logback log events into the OTel SdkLoggerProvider that
 			 spring-boot-starter-opentelemetry configures; Boot only wires the SDK/exporter,
-			 it does not ship a Logback bridge. -->
+			 it does not ship or version-manage a Logback bridge. -->
 		<dependency>
 			<groupId>io.opentelemetry.instrumentation</groupId>
 			<artifactId>opentelemetry-logback-appender-1.0</artifactId>
-			<version>2.29.0-alpha</version>
-		</dependency>
-		<!-- Pin to match opentelemetry-sdk 1.62.0 (Boot-managed). This artifact's own
-			 transitive pull (1.63.0-alpha, via opentelemetry-instrumentation-api 2.29.0)
-			 relocated io.opentelemetry.api.incubator.common.ExtendedAttributeKey and breaks
-			 opentelemetry-sdk 1.62.0's ExtendedSdkLogRecordBuilder at runtime with a
-			 NoClassDefFoundError. A direct dependency declaration outranks the transitive one
-			 regardless of graph depth, so this forces the compatible version. -->
-		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-api-incubator</artifactId>
-			<version>1.62.0-alpha</version>
+			<version>${opentelemetry-instrumentation.version}-alpha</version>
 		</dependency>
 
 		<dependency>

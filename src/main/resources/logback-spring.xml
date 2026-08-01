@@ -18,7 +18,6 @@
         </appender>
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="OTEL"/>
         </root>
     </springProfile>
 
