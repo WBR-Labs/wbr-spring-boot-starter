@@ -10,6 +10,4 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    uses: WBR-Platform/wbr-github-workflows/.github/workflows/pipeline.yml@main
-    with:
-      flavour: maven
+    uses: WBR-Platform/wbr-github-workflows/.github/workflows/maven.yml@main
