@@ -1,14 +1,13 @@
-name: CI
+name: CD
 
 on:
   workflow_dispatch: # Enables the manual trigger button
   push:
-    branches:
-      - '**'
+    branches: [main]
 
 jobs:
-  verify:
+  pipeline:
     permissions:
       id-token: write
       contents: read
-    uses: WBR-Platform/wbr-github-workflows/.github/workflows/maven-library-ci.yml@main
+    uses: WBR-Platform/wbr-github-workflows/.github/workflows/maven-library-cd.yml@main
